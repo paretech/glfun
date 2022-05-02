@@ -10,6 +10,7 @@
 - [OpenGL Course - Create 3D and 2D Graphics With C++ (YouTube)](https://www.youtube.com/watch?v=45MIykWJ-C4)
 - [OpenGL with Python (YouTube Playlist)](https://www.youtube.com/playlist?list=PLn3eTxaOtL2PDnEVNwOgZFm5xYPr4dUoR)
 - [Associated GitHub for "OpenGL with Python" playlist](https://github.com/amengede/getIntoGameDev)
+- [Rabbid76 Stackoverflow Responses](https://stackoverflow.com/users/5577765/rabbid76)
 
 
 ## PyOpenGL Highlights
