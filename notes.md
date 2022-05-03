@@ -12,6 +12,7 @@
 - [Associated GitHub for "OpenGL with Python" playlist](https://github.com/amengede/getIntoGameDev)
 - [Rabbid76 Stackoverflow Responses](https://stackoverflow.com/users/5577765/rabbid76)
 - [NumPy Reference](https://numpy.org/devdocs/reference/index.html)
+  - [Structured Arrays](https://numpy.org/doc/stable/user/basics.rec.html)
   - [Data type objects (dtype)](https://numpy.org/devdocs/reference/arrays.dtypes.html#arrays-dtypes-constructing)
 
 
