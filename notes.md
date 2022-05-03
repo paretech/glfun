@@ -11,6 +11,8 @@
 - [OpenGL with Python (YouTube Playlist)](https://www.youtube.com/playlist?list=PLn3eTxaOtL2PDnEVNwOgZFm5xYPr4dUoR)
 - [Associated GitHub for "OpenGL with Python" playlist](https://github.com/amengede/getIntoGameDev)
 - [Rabbid76 Stackoverflow Responses](https://stackoverflow.com/users/5577765/rabbid76)
+- [NumPy Reference](https://numpy.org/devdocs/reference/index.html)
+  - [Data type objects (dtype)](https://numpy.org/devdocs/reference/arrays.dtypes.html#arrays-dtypes-constructing)
 
 
 ## PyOpenGL Highlights
