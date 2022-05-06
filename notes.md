@@ -14,6 +14,8 @@
 - [NumPy Reference](https://numpy.org/devdocs/reference/index.html)
   - [Structured Arrays](https://numpy.org/doc/stable/user/basics.rec.html)
   - [Data type objects (dtype)](https://numpy.org/devdocs/reference/arrays.dtypes.html#arrays-dtypes-constructing)
+- OpenGL Debugging
+  - [OpenGL Getting Shader Attached to Program](https://stackoverflow.com/questions/15537415/opengl-getting-shader-attached-to-program)
 
 
 ## PyOpenGL Highlights
