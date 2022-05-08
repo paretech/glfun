@@ -10,6 +10,12 @@
 - [OpenGL Course - Create 3D and 2D Graphics With C++ (YouTube)](https://www.youtube.com/watch?v=45MIykWJ-C4)
 - [OpenGL with Python (YouTube Playlist)](https://www.youtube.com/playlist?list=PLn3eTxaOtL2PDnEVNwOgZFm5xYPr4dUoR)
 - [Associated GitHub for "OpenGL with Python" playlist](https://github.com/amengede/getIntoGameDev)
+- [Rabbid76 Stackoverflow Responses](https://stackoverflow.com/users/5577765/rabbid76)
+- [NumPy Reference](https://numpy.org/devdocs/reference/index.html)
+  - [Structured Arrays](https://numpy.org/doc/stable/user/basics.rec.html)
+  - [Data type objects (dtype)](https://numpy.org/devdocs/reference/arrays.dtypes.html#arrays-dtypes-constructing)
+- OpenGL Debugging
+  - [OpenGL Getting Shader Attached to Program](https://stackoverflow.com/questions/15537415/opengl-getting-shader-attached-to-program)
 
 
 ## PyOpenGL Highlights
