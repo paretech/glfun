@@ -1,7 +1,10 @@
 # Copyright 2022 - Pare Technologies
 import logging
+import OpenGL
+OpenGL.ERROR_ON_COPY = True
+OpenGL.FULL_LOGGING = True
+OpenGL.ERROR_CHECKING = True
 import OpenGL.GL as gl
-# gl.ERROR_ON_COPY = True
 import os
 # os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = ''
 import pygame as pg
@@ -52,7 +55,10 @@ if __name__ == "__main__":
         level=logging.DEBUG,
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[
-            logging.FileHandler(f'{__file__}.log'),
+            logging.FileHandler(
+                filename=f'{__file__}.log',
+                mode='w'
+                ),
             logging.StreamHandler()
         ]
     )
