@@ -21,7 +21,7 @@ class App:
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK,
                                     pg.GL_CONTEXT_PROFILE_CORE)
 
-        pg.display.set_icon(pg.image.load('logo.png'))
+        pg.display.set_icon(pg.image.load('gfx\logo.png'))
         pg.display.set_caption('App Title', 'App Icon Title')
 
         display_flags = pg.OPENGL | pg.DOUBLEBUF
