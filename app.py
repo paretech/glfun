@@ -1,5 +1,9 @@
 # Copyright 2022 - Pare Technologies
-import logging
+"""Main Application
+
+The main application contains functionality related to managing the application,
+creating window, OpenGL Context.
+"""
 import OpenGL
 OpenGL.ERROR_ON_COPY = True
 OpenGL.FULL_LOGGING = True
@@ -9,6 +13,7 @@ import os
 # os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = ''
 import pygame as pg
 
+import logging
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
 
@@ -21,7 +26,7 @@ class App:
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK,
                                     pg.GL_CONTEXT_PROFILE_CORE)
 
-        pg.display.set_icon(pg.image.load('gfx\logo.png'))
+        pg.display.set_icon(pg.image.load(r'gfx/logo.png'))
         pg.display.set_caption('App Title', 'App Icon Title')
 
         display_flags = pg.OPENGL | pg.DOUBLEBUF
@@ -52,7 +57,7 @@ class App:
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[
             logging.FileHandler(
