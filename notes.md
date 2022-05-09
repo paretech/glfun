@@ -16,6 +16,8 @@
   - [Data type objects (dtype)](https://numpy.org/devdocs/reference/arrays.dtypes.html#arrays-dtypes-constructing)
 - OpenGL Debugging
   - [OpenGL Getting Shader Attached to Program](https://stackoverflow.com/questions/15537415/opengl-getting-shader-attached-to-program)
+- Model View Projection Transforms
+  - [https://www.youtube.com/watch?v=rvJHkYnAR3w](Camera (View) Transform - Vulkan Game)
 
 
 ## PyOpenGL Highlights
