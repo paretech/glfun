@@ -12,6 +12,7 @@ import OpenGL.GL as gl
 import os
 # os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = ''
 import pygame as pg
+import graphics
 
 import logging
 log = logging.getLogger(__name__)
@@ -36,6 +37,8 @@ class App:
 
         gl.glClearColor(0.1, 0.2, 0.2, 1)
 
+        self.objects = [graphics.Cube(location=[0, 0, -3], euler=[0, 0, 0])]
+
         self.main_event_loop()
 
     def main_event_loop(self):
@@ -51,6 +54,9 @@ class App:
 
     def display(self):
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+        for object in self.objects:
+            object.draw()
+
         pg.display.flip()
         self.clock.tick(60)
 
