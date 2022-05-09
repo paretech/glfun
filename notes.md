@@ -17,7 +17,7 @@
 - OpenGL Debugging
   - [OpenGL Getting Shader Attached to Program](https://stackoverflow.com/questions/15537415/opengl-getting-shader-attached-to-program)
 - Model View Projection Transforms
-  - [https://www.youtube.com/watch?v=rvJHkYnAR3w](Camera (View) Transform - Vulkan Game)
+  - (Camera (View) Transform - Vulkan Game)[https://www.youtube.com/watch?v=rvJHkYnAR3w]
 
 
 ## PyOpenGL Highlights
