@@ -6,34 +6,39 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
 
 
-
-
 def create_shader_from_file(shader_type, filepath):
     try:
         with open(filepath) as f:
             return create_shader(shader_type, f.readlines())
-    except Exception as e:
-        log.error(e)
-        raise e
+    except FileNotFoundError as e:
+        log.error(f'Shader file not found. {shader_type!r} {filepath}')
+        raise(e)
 
 
-def create_shader(shader_type, source_code):
+def create_shader(shader_type, shader_source):
     """Create an OpenGL Shader"""
     shader = gl.glCreateShader(shader_type)
-    gl.glShaderSource(shader, source_code)
-    gl.glCompileShader(shader)
+    gl.glShaderSource(shader, shader_source)
+    # @TODO: With empty shader file, this call results in GLError on Mac but not windows
+    try:
+        gl.glCompileShader(shader)
+    finally:
+        log_shader(shader, shader_type, shader_source)
 
+    return shader
+
+
+def log_shader(shader, shader_type, shader_source):
     compile_status = gl.glGetShaderiv(shader, gl.GL_COMPILE_STATUS)
     if compile_status != gl.GL_TRUE:
-        raise ShaderCompilationError(
-            """Shader compile failure (%s): %s"""%(
-                compile_status,
-                glGetShaderInfoLog( shader ),
-            ),
-            source,
-            shaderType,
-        )
-    return shader
+        log.warning(f'Problem compiling {shader_type!r}')
+
+    shader_log = gl.glGetShaderInfoLog(shader)
+    if shader_log:
+        log.warning(f'{shader_type!r}: {shader_log.strip()}')
+
+    if not shader_source:
+        log.warning(f'{shader_type!r} source empty.')
 
 
 def create_shader_program(shaders):
@@ -66,7 +71,6 @@ class Shader:
 
     def create_shader(self):
         shader = create_shader_from_file(self._shader_type, self._filepath)
-
         # if self.compile_status != gl.GL_TRUE:
 
         return shader
@@ -86,6 +90,14 @@ class Shader:
         return gl.glGetShaderInfoLog(self.name)
 
 
+# raise ShaderCompilationError(
+#     """Shader compile failure (%s): %s""" % (
+#         compile_status,
+#         gl.glGetShaderInfoLog(shader),
+#     ),
+#     source_code,
+#     shader_type,
+# )
 class ShaderCompilationError(RuntimeError):
     """Raised when a shader compilation fails"""
 
