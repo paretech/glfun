@@ -33,5 +33,8 @@ class Cube:
                             fragment=r'./shaders/shader.frag',
                         )
 
+        
+
     def draw(self):
-        raise NotImplementedError
+        # raise NotImplementedError
+        pass

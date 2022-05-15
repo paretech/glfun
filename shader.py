@@ -23,12 +23,12 @@ def create_shader(shader_type, shader_source):
     try:
         gl.glCompileShader(shader)
     finally:
-        log_shader(shader, shader_type, shader_source)
+        check_shader(shader, shader_type, shader_source)
 
     return shader
 
 
-def log_shader(shader, shader_type, shader_source):
+def check_shader(shader, shader_type, shader_source):
     compile_status = gl.glGetShaderiv(shader, gl.GL_COMPILE_STATUS)
     if compile_status != gl.GL_TRUE:
         log.warning(f'Problem compiling {shader_type!r}')
@@ -47,11 +47,22 @@ def create_shader_program(shaders):
     for shader in shaders:
         gl.glAttachShader(program, shader)
 
-    gl.glLinkProgram(program)
-
-    # @TODO: Check link status and logs
+    try:
+        gl.glLinkProgram(program)
+    finally:
+        check_program(program)
 
     return program
+
+
+def check_program(program):
+    link_status = gl.glGetProgramiv(program, gl.GL_LINK_STATUS)
+    if link_status != gl.GL_TRUE:
+        log.warning(f'Problem linking Program{program}')
+
+    program_log = gl.glGetProgramInfoLog(program)
+    if program_log:
+        log.warning(f'Program{program}: {program_log.strip()}')
 
 
 class Program:

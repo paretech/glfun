@@ -6,11 +6,11 @@ creating window, OpenGL Context.
 """
 import OpenGL
 OpenGL.ERROR_ON_COPY = True
-OpenGL.FULL_LOGGING = True
+OpenGL.FULL_LOGGING = False
 OpenGL.ERROR_CHECKING = True
 import OpenGL.GL as gl
 import os
-# os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = ''
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = ''
 import pygame as pg
 import graphics
 
@@ -63,7 +63,7 @@ class App:
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.WARN,
         # for debug consider adding %(filename)s:%(lineno)s %(funcName)s()
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[
