@@ -64,6 +64,7 @@ class App:
 if __name__ == "__main__":
     logging.basicConfig(
         level=logging.INFO,
+        # for debug consider adding %(filename)s:%(lineno)s %(funcName)s()
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[
             logging.FileHandler(
