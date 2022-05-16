@@ -34,9 +34,11 @@ class Cube:
                             fragment=r'./shaders/shader.frag',
                         )
 
-        self.vertices = self.load_vertices()
+        self.vertex_data = self._load_vertex_data()
 
-    def load_vertices(self):
+        self.config_shader()
+
+    def _load_vertex_data(self):
         colors = np.array([[1, 0, 0, 1], [0, 1, 0, 1], [0, 0, 1, 1]], dtype=np.float32)
 
         data_types = np.dtype([
@@ -54,7 +56,23 @@ class Cube:
         gl.glBindVertexArray(self.vao)
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.vbo)
 
+        gl.glBufferData(gl.GL_ARRAY_BUFFER, self.vertex_data.nbytes, self.vertex_data, gl.GL_STATIC_DRAW)
+
+        stride = self.vertex_data.strides[0]
+
+        for field in self.vertex_data.dtype.names:
+            location = gl.glGetAttribLocation(self.shader.name, field)
+
+            if location < 0:
+                log.warning(f'Unable to find attribute "{field}" in vertex shader.')
+                raise shader.ShaderAttributeError()
+
+            size = self.vertex_data[field].shape[1]
+            offset = self.vertex_data.dtype.fields[field][1]
+            gl.glEnableVertexAttribArray(location)
+            gl.glVertexAttribPointer(location, size, gl.GL_FLOAT, gl.GL_FALSE, stride, shader.buffer_offset(offset))
+
     def draw(self, mode=gl.GL_TRIANGLE_STRIP):
         gl.glBindVertexArray(self.vbo)
         gl.glUseProgram(self.shader.name)
-        gl.glDrawArrays(mode, 0, self.vertices.size)
+        gl.glDrawArrays(mode, 0, self.vertex_data.size)

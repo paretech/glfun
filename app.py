@@ -28,7 +28,7 @@ class App:
                                     pg.GL_CONTEXT_PROFILE_CORE)
 
         pg.display.set_icon(pg.image.load(r'gfx/logo.png'))
-        pg.display.set_caption('App Title', 'App Icon Title')
+        pg.display.set_caption('PyOpenGL Cube Spin', 'App Icon Title')
 
         display_flags = pg.OPENGL | pg.DOUBLEBUF
         pg.display.set_mode((640, 480), display_flags)

@@ -1,3 +1,4 @@
+import ctypes
 import OpenGL.GL as gl
 import OpenGL.GL.shaders
 import logging
@@ -6,13 +7,14 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
 
 
+def buffer_offset(offset):
+    '''Specifies offset in OpenGL buffer to first component'''
+    return ctypes.c_void_p(offset)
+
+
 def create_shader_from_file(shader_type, filepath):
-    try:
-        with open(filepath) as f:
-            return create_shader(shader_type, f.readlines())
-    except FileNotFoundError as e:
-        log.error(f'Shader file not found. {shader_type!r} {filepath}')
-        raise(e)
+    with open(filepath) as f:
+        return create_shader(shader_type, f.readlines())
 
 
 def create_shader(shader_type, shader_source):
@@ -143,3 +145,11 @@ class ShaderValidationError(RuntimeError):
 
 class ShaderLinkError(RuntimeError):
     """Raised when a shader link fails"""
+
+
+class ShaderAttributeError(RuntimeError):
+    """Raised when a shader attribute is invalid
+
+    Raised when the named attribute variable is not an active attribute in the
+    specified shader program or if name starts with the reserved prefix "gl_"
+    """
