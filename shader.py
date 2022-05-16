@@ -29,6 +29,10 @@ def create_shader(shader_type, shader_source):
 
 
 def check_shader(shader, shader_type, shader_source):
+    '''Perform various status checks on shader
+
+    Typically run immediately after compiling a shader.
+    '''
     compile_status = gl.glGetShaderiv(shader, gl.GL_COMPILE_STATUS)
     if compile_status != gl.GL_TRUE:
         log.warning(f'Problem compiling {shader_type!r}')
@@ -42,17 +46,33 @@ def check_shader(shader, shader_type, shader_source):
 
 
 def create_shader_program(shaders):
+    '''Create shader program and attach shaders'''
     program = gl.glCreateProgram()
 
-    for shader in shaders:
-        gl.glAttachShader(program, shader)
+    attach_shaders(program, shaders)
 
     try:
         gl.glLinkProgram(program)
     finally:
         check_program(program)
+        delete_shaders(shaders)
 
     return program
+
+
+def attach_shaders(program, shaders):
+    '''Attach shaders to the shader program'''
+    for shader in shaders:
+        gl.glAttachShader(program, shader)
+
+
+def delete_shaders(shaders):
+    '''Delete compiled shaders
+
+    Typically performed after verify successful program linking.
+    '''
+    for shader in shaders:
+        gl.glDeleteShader(shader)
 
 
 def check_program(program):
@@ -64,6 +84,10 @@ def check_program(program):
     if program_log:
         log.warning(f'Program{program}: {program_log.strip()}')
 
+    attached_shaders = gl.glGetProgramiv(program, gl.GL_ATTACHED_SHADERS)
+    if attached_shaders != 2:
+        log.error(f'Shader program{program} has {attached_shaders} but expected only 2.')
+
 
 class Program:
     def __init__(self, vertex, fragment):
@@ -71,7 +95,12 @@ class Program:
             Shader(gl.GL_VERTEX_SHADER, vertex),
             Shader(gl.GL_FRAGMENT_SHADER, fragment),
         ]
-        self.name = gl.glCreateProgram()
+
+        shader_names = [shader.name for shader in self._shaders]
+        self.name = create_shader_program(shader_names)
+
+    def __repr__(self):
+        return self.name
 
 
 class Shader:
@@ -81,15 +110,10 @@ class Shader:
         self.name = self.create_shader()
 
     def create_shader(self):
-        shader = create_shader_from_file(self._shader_type, self._filepath)
-        # if self.compile_status != gl.GL_TRUE:
-
-        return shader
+        return create_shader_from_file(self._shader_type, self._filepath)
 
     @property
     def type(self):
-        import OpenGL
-        a = OpenGL.GL.shaders.compileProgram()
         return gl.glGetShaderiv(self.name, gl.GL_SHADER_TYPE)
 
     @property
