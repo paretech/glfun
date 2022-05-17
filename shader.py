@@ -98,33 +98,33 @@ class Program:
             Shader(gl.GL_FRAGMENT_SHADER, fragment),
         ]
 
-        shader_names = [shader.name for shader in self._shaders]
-        self.name = create_shader_program(shader_names)
+        shader_names = [shader.gl_name for shader in self._shaders]
+        self.gl_name = create_shader_program(shader_names)
 
     def __repr__(self):
-        return self.name
+        return self.gl_name
 
 
 class Shader:
     def __init__(self, shader_type, filepath):
         self._shader_type = shader_type
         self._filepath = filepath
-        self.name = self.create_shader()
+        self.gl_name = self.create_shader()
 
     def create_shader(self):
         return create_shader_from_file(self._shader_type, self._filepath)
 
     @property
     def type(self):
-        return gl.glGetShaderiv(self.name, gl.GL_SHADER_TYPE)
+        return gl.glGetShaderiv(self.gl_name, gl.GL_SHADER_TYPE)
 
     @property
     def compile_status(self):
-        return gl.glGetShaderiv(self.name, gl.GL_COMPILE_STATUS)
+        return gl.glGetShaderiv(self.gl_name, gl.GL_COMPILE_STATUS)
 
     @property
     def compile_info(self):
-        return gl.glGetShaderInfoLog(self.name)
+        return gl.glGetShaderInfoLog(self.gl_name)
 
 
 # raise ShaderCompilationError(

@@ -1,13 +1,20 @@
+from abc import ABCMeta, abstractmethod
 import OpenGL.GL as gl
 import numpy as np
 import shader
 import logging
 import vertices
+import pyrr
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
 
 
-class Cube:
+class SceneObject(metaclass=ABCMeta):
+    def __init__(self):
+        raise NotImplementedError
+
+
+class Cube():
     """Cube Object in 3D Space
 
     This object is used to represent a cube object in 3D space.
@@ -61,7 +68,7 @@ class Cube:
         stride = self.vertex_data.strides[0]
 
         for field in self.vertex_data.dtype.names:
-            location = gl.glGetAttribLocation(self.shader.name, field)
+            location = gl.glGetAttribLocation(self.shader.gl_name, field)
 
             if location < 0:
                 log.warning(f'Unable to find attribute "{field}" in vertex shader.')
@@ -74,5 +81,28 @@ class Cube:
 
     def draw(self, mode=gl.GL_TRIANGLE_STRIP):
         gl.glBindVertexArray(self.vbo)
-        gl.glUseProgram(self.shader.name)
+        gl.glUseProgram(self.shader.gl_name)
         gl.glDrawArrays(mode, 0, self.vertex_data.size)
+
+
+class Camera:
+    def __init__(self, position, target, up=(0, 1, 0)):
+        self.position = np.array(position, dtype=np.float32)
+        self.target = np.array(target, dtype=np.float32)
+        self.up = np.array(up, dtype=np.float32)
+
+        self.view_transform = self.config_view_transform()
+
+    def config_view_transform(self):
+        view_transform = pyrr.matrix44.create_look_at(
+            eye=self.position,
+            target=self.target,
+            up=self.up, 
+            dtype=np.float32,
+        )
+        
+
+    @property
+    def transform(self):
+        return None
+

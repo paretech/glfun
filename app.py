@@ -13,6 +13,8 @@ import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = ''
 import pygame as pg
 import graphics
+import pyrr
+import numpy as np
 
 import logging
 log = logging.getLogger(__name__)
@@ -37,7 +39,11 @@ class App:
 
         gl.glClearColor(0.1, 0.2, 0.2, 1)
 
-        self.objects = [graphics.Cube(location=[0, 0, -3], euler=[0, 0, 0])]
+        self.scene_objects = [graphics.Cube(location=[0, 0, -3], euler=[0, 0, 0])]
+
+        self.scene_camera = graphics.Camera
+
+        self.mvp_matrix = pyrr.matrix44.create_identity(dtype=np.float32)
 
         self.main_event_loop()
 
@@ -54,7 +60,9 @@ class App:
 
     def display(self):
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
-        for object in self.objects:
+        # @Next: fix the following line, then modify shader to add uniform
+        # gl.glUniformMatrix4fv(gl.glGetUniformLocation(self.scene_objects[0].shader.gl_name, 'mvp_matrix'), 1, gl.GL_FALSE, self.mvp_matrix)
+        for object in self.scene_objects:
             object.draw()
 
         pg.display.flip()
