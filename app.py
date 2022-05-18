@@ -37,13 +37,18 @@ class App:
 
         self.clock = pg.time.Clock()
 
+        gl.glEnable(gl.GL_DEPTH_TEST)
         gl.glClearColor(0.1, 0.2, 0.2, 1)
 
-        self.scene_objects = [graphics.Cube(location=[0, 0, -3], euler=[0, 0, 0])]
+        self.scene_cube = graphics.Cube(position=[0, 0, -3], eulers=[0, 0, 0])
 
         self.scene_camera = graphics.Camera
 
-        self.mvp_matrix = pyrr.matrix44.create_identity(dtype=np.float32)
+        self.view_transform = pyrr.matrix44.create_identity(dtype=np.float32)
+        self.projection_transform = pyrr.matrix44.create_perspective_projection(
+            fovy=45, aspect=640/480, 
+            near=0.1, far=10, dtype=np.float32
+        )
 
         self.main_event_loop()
 
@@ -59,11 +64,9 @@ class App:
                 raise SystemExit
 
     def display(self):
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT|gl.GL_DEPTH_BUFFER_BIT)
         # @Next: fix the following line, then modify shader to add uniform
-        # gl.glUniformMatrix4fv(gl.glGetUniformLocation(self.scene_objects[0].shader.gl_name, 'mvp_matrix'), 1, gl.GL_FALSE, self.mvp_matrix)
-        for object in self.scene_objects:
-            object.draw()
+        self.scene_cube.draw(self.projection_transform)
 
         pg.display.flip()
         self.clock.tick(60)

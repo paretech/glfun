@@ -29,9 +29,9 @@ class Cube():
     Returns a cube object that can be used for subsequent resource management,
     transformation and drawing via OpenGL API.
     """
-    def __init__(self, location, euler):
-        self.location = location
-        self.euler = euler
+    def __init__(self, position, eulers):
+        self.position = position
+        self.eulers = eulers
 
         self.vao = gl.glGenVertexArrays(1)
         self.vbo = gl.glGenBuffers(1)
@@ -41,9 +41,42 @@ class Cube():
                             fragment=r'./shaders/shader.frag',
                         )
 
+        self.transform_location = gl.glGetUniformLocation(self.shader.gl_name, 'mvp_matrix')
+
         self.vertex_data = self._load_vertex_data()
 
         self.config_shader()
+
+    @property
+    def model_transform(self):
+        # return pyrr.matrix44.multiply(
+        #     m1=pyrr.matrix44.create_from_eulers(
+        #         eulers=np.radians(self.eulers), dtype=np.float32
+        #     ),
+        #     m2=pyrr.matrix44.create_from_translation(
+        #         vec=np.array(self.position), dtype=np.float32
+        #     ),
+        # )
+        model_transform = pyrr.matrix44.create_identity(dtype=np.float32)
+        """
+            pitch: rotation around x axis
+            roll:rotation around z axis
+            yaw: rotation around y axis
+        """
+        model_transform = pyrr.matrix44.multiply(
+            m1=model_transform, 
+            m2=pyrr.matrix44.create_from_eulers(
+                eulers=np.radians(self.eulers), dtype=np.float32
+            )
+        )
+        model_transform = pyrr.matrix44.multiply(
+            m1=model_transform, 
+            m2=pyrr.matrix44.create_from_translation(
+                vec=np.array(self.position),dtype=np.float32
+            )
+        )
+
+        return model_transform
 
     def _load_vertex_data(self):
         colors = np.array([[1, 0, 0, 1], [0, 1, 0, 1], [0, 0, 1, 1]], dtype=np.float32)
@@ -79,9 +112,14 @@ class Cube():
             gl.glEnableVertexAttribArray(location)
             gl.glVertexAttribPointer(location, size, gl.GL_FLOAT, gl.GL_FALSE, stride, shader.buffer_offset(offset))
 
-    def draw(self, mode=gl.GL_TRIANGLE_STRIP):
+    def draw(self, transform_matrix, mode=gl.GL_TRIANGLE_STRIP):
+        mvp_matrix = pyrr.matrix44.multiply(
+            m1=self.model_transform,
+            m2=transform_matrix
+        )
         gl.glBindVertexArray(self.vbo)
         gl.glUseProgram(self.shader.gl_name)
+        gl.glUniformMatrix4fv(self.transform_location, 1, gl.GL_FALSE, mvp_matrix)
         gl.glDrawArrays(mode, 0, self.vertex_data.size)
 
 
